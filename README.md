@@ -100,7 +100,8 @@ npx knex migrate:make [nome da migration]
 - As tabelas devem ter as seguintes colunas:
   - `agentes`: `id`, `nome (string)`, `dataDeIncorporacao (date)`, `cargo (string)`
   - `casos`: `id`, `titulo (string)`, `descricao (string)`, `status (aberto/solucionado)`, `agente_id (UUID)` com **foreign key** para `agentes.id`.
-*** IMPORTANTE! Não utilizaremos mais o uuid, pois o PostgreSQL lida com a lógica de indexação e incrementa automaticamente. Jamais explicite o id dentro de um payload que será guardado no banco de dados, pois isso pode causar comportamento indesejado ***
+
+***IMPORTANTE! Não utilizaremos mais o uuid, pois o PostgreSQL lida com a lógica de indexação e incrementa automaticamente. Jamais explicite o id dentro de um payload que será guardado no banco de dados, pois isso pode causar comportamento indesejado***
 ---
 
 ### 4. Criar Seeds
