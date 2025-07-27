@@ -93,22 +93,26 @@ module.exports = db;
 - Use o Knex CLI para gerar as migrations:
 
 ```bash
-npx knex migrate:make create_agentes_table
-npx knex migrate:make create_casos_table
+npx knex migrate:make [nome da migration]
+
 ```
 
 - As tabelas devem ter as seguintes colunas:
-  - `agentes`: `id (UUID)`, `nome (string)`, `dataDeIncorporacao (date)`, `cargo (string)`
-  - `casos`: `id (UUID)`, `titulo (string)`, `descricao (string)`, `status (aberto/solucionado)`, `agente_id (UUID)` com **foreign key** para `agentes.id`.
-
+  - `agentes`: `id`, `nome (string)`, `dataDeIncorporacao (date)`, `cargo (string)`
+  - `casos`: `id`, `titulo (string)`, `descricao (string)`, `status (aberto/solucionado)`, `agente_id (UUID)` com **foreign key** para `agentes.id`.
+*** IMPORTANTE! Não utilizaremos mais o uuid, pois o PostgreSQL lida com a lógica de indexação e incrementa automaticamente. Jamais explicite o id dentro de um payload que será guardado no banco de dados, pois isso pode causar comportamento indesejado ***
 ---
 
 ### 4. Criar Seeds
 - Crie seeds para popular as tabelas com pelo menos 2 agentes e 2 casos:
 
 ```bash
-npx knex seed:make initial_agentes
-npx knex seed:make initial_casos
+npx knex seed:make [nome do arquivo de seeds]
+
+```
+- Execute as seeds com:
+```bash
+knex seed:run
 ```
 
 ---
