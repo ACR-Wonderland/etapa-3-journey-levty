@@ -72,7 +72,7 @@ npx knex migrate:make [nome da migration]
   - `agentes`: `id`, `nome (string)`, `dataDeIncorporacao (date)`, `cargo (string)`
   - `casos`: `id`, `titulo (string)`, `descricao (string)`, `status (aberto/solucionado)`, `agente_id` com **foreign key** para `agentes.id`.
 
-**IMPORTANTE! Não utilizaremos mais o uuid, pois o PostgreSQL lida com a lógica de indexação e incrementa automaticamente. Jamais explicite o id dentro de um payload que será guardado no banco de dados, pois isso pode causar comportamento indesejado**
+**- IMPORTANTE! Não utilizaremos mais o uuid, pois o PostgreSQL lida com a lógica de indexação e incrementa automaticamente. Jamais explicite o id dentro de um payload que será guardado no banco de dados, pois isso pode causar comportamento indesejado**
 ---
 
 ### 4. Criar Seeds
@@ -99,8 +99,8 @@ knex seed:run
 
 ---
 
-### 7. Documentar no README
-Adicione instruções claras para:
+### 7. Documentar de maneira simples em um arquivo INSTRUCTIONS.md
+Crie esse arquivo e adicione instruções claras para:
 - Subir o banco com Docker.
 - Executar migrations:
 - Rodar seeds:
