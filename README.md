@@ -17,6 +17,38 @@ Refatorar a API de gerenciamento de agentes e casos policiais para utilizar um *
 ---
 
 ## **O que deve ser feito**
+# 📁  Estrutura dos Diretórios (pastas) 
+```
+📦 SEU-REPOSITÓRIO
+│
+├── package.json
+├── server.js
+├── .env (opcional para centralizar configurações)
+│
+├── db/
+│ ├── migrations/
+│ ├── seeds/
+│ ├── knexfile.js
+│ └── db.js
+│
+├── routes/
+│ ├── agentesRoutes.js
+│ └── casosRoutes.js
+│
+├── controllers/
+│ ├── agentesController.js
+│ └── casosController.js
+│
+├── repositories/
+│ ├── agentesRepository.js
+│ └── casosRepository.js
+│
+├── utils/
+│ └── errorHandler.js
+│
+
+  
+```
 
 ### 1. Configurar o banco de dados PostgreSQL com Docker
 - Crie um arquivo `docker-compose.yml` na raiz do projeto para subir um container do PostgreSQL com um **volume persistente**.
@@ -25,27 +57,27 @@ Refatorar a API de gerenciamento de agentes e casos policiais para utilizar um *
 Dentro da pasta `db/`, você deve criar os seguintes arquivos:
 
 #### **`knexfile.js`**
-Configurações de conexão com o PostgreSQL para ambiente de desenvolvimento:
+Configurações de conexão com o PostgreSQL para ambiente de desenvolvimento. As credenciais devem ser as mesmas deste exemplo:
 
 ```js
-module.exports = {
-  development: {
-    client: 'pg',
-    connection: {
-      host: '127.0.0.1',
-      user: 'postgres',
-      password: 'postgres',
-      database: 'policia_db'
+const knex = require('knex')({
+  client: 'pg',
+  connection: {
+    host: '127.0.0.1',
+    port: 5432,
+    user: 'postgres',
+    password: 'postgres',
+    database: 'policia_db',
+  },
+  migrations: {
+      directory: './db/migrations',
     },
-    migrations: {
-      directory: './db/migrations'
+  seeds: {
+      directory: './db/seeds',
     },
-    seeds: {
-      directory: './db/seeds'
-    }
-  }
-};
+});
 ```
+- Seu arquivo `.env` deve conter as variáveis explicit 
 
 #### **`db.js`**
 Arquivo responsável por criar e exportar a instância do Knex:
@@ -72,7 +104,7 @@ npx knex migrate:make [nome da migration]
   - `agentes`: `id`, `nome (string)`, `dataDeIncorporacao (date)`, `cargo (string)`
   - `casos`: `id`, `titulo (string)`, `descricao (string)`, `status (aberto/solucionado)`, `agente_id` com **foreign key** para `agentes.id`.
 
-**- IMPORTANTE! Não utilizaremos mais o uuid, pois o PostgreSQL lida com a lógica de indexação e incrementa automaticamente. Jamais explicite o id dentro de um payload que será guardado no banco de dados, pois isso pode causar comportamento indesejado**
+**IMPORTANTE! Não utilizaremos mais o uuid, pois o PostgreSQL lida com a lógica de indexação e incrementa automaticamente. Jamais explicite o id dentro de um payload que será guardado no banco de dados, pois isso pode causar comportamento indesejado**
 ---
 
 ### 4. Criar Seeds
