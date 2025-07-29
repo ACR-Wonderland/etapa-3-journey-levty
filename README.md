@@ -1,5 +1,5 @@
 
-# Etapa 3: Persistência de Dados com PostgreSQL e Knex.js
+# Etapa 3: Persistência de Dados com PostgreSQL e Knex.js 
 
 ## 🧩 Contexto
 
