@@ -25,6 +25,7 @@ Refatorar a API de gerenciamento de agentes e casos policiais para utilizar um *
 ├── server.js
 ├── .env
 ├── knexfile.js
+├── INSTRUCTIONS.md
 
 │
 ├── db/
