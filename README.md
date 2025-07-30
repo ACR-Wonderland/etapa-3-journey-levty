@@ -55,9 +55,9 @@ Refatorar a API de gerenciamento de agentes e casos policiais para utilizar um *
 - Crie um arquivo .env na raíz do projeto para armazenar as seguintes variáveis de ambiente do nosso banco de dados:
 
 ```
-POSTGRES_USER=root
-POSTGRES_PASSWORD=root
-POSTGRES_DB=db
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=policia_db
 ```
 **OBSERVAÇÃO: o uso de valores diferentes resultará em falhas nos testes**
 
