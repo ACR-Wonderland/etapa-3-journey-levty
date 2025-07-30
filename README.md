@@ -102,10 +102,10 @@ module.exports = db;
 ---
 
 ### 3. Criar as Migrations
-- Use o Knex CLI para gerar as migrations:
+- Use o Knex CLI para gerar as migrations com o seguinte nome:
 
 ```bash
-npx knex migrate:make [nome da migration]
+npx knex migrate:make solution_migrations.js
 
 ```
 
@@ -120,13 +120,15 @@ npx knex migrate:make [nome da migration]
 - Crie seeds para popular as tabelas com pelo menos 2 agentes e 2 casos:
 
 ```bash
-npx knex seed:make [nome do arquivo de seeds]
+npx knex seed:make {numero_gerado}_solution_migrations.js
 
 ```
 - Execute as seeds com:
 ```bash
 knex seed:run
 ```
+
+**OBSERVAÇÃO: Siga o nome do migration à risca para evitar falhas desnecessárias nos testes**
 
 ---
 
