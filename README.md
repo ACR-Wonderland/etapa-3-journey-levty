@@ -144,9 +144,9 @@ knex seed:run
 
 ### 7. Documentar de maneira simples em um arquivo INSTRUCTIONS.md
 Crie esse arquivo e adicione instruções claras para:
-- Subir o banco com Docker.
-- Executar migrations:
-- Rodar seeds:
+- Subir o banco com Docker
+- Executar migrations
+- Rodar seeds
 
 
 ---
