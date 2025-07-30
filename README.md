@@ -51,15 +51,16 @@ Refatorar a API de gerenciamento de agentes e casos policiais para utilizar um *
 ```
 
 ### 1. Configurar o banco de dados PostgreSQL com Docker
-- Crie um arquivo `docker-compose.yml` na raiz do projeto para subir um container do PostgreSQL com um **volume persistente**.
-
-- Utilize um arquivo .env para armazenar as seguintes credenciais e utilize-as no arquivo `docker-compose.yml`:
+- Crie um arquivo .env na raíz do projeto para armazenar as seguintes variáveis de ambiente do nosso banco de dados:
 
 ```
 POSTGRES_USER=root
 POSTGRES_PASSWORD=root
 POSTGRES_DB=db
 ```
+**OBSERVAÇÃO: o uso de valores diferentes resultará em falhas nos testes**
+
+- Crie um arquivo `docker-compose.yml` na raiz do projeto para subir um container do PostgreSQL com um **volume persistente**, utilizando as váriaveis de ambiente para inserir dados sensíveis.
 
 ### 2. Criar a pasta `db/`
 Dentro da pasta `db/`, você deve criar os seguintes arquivos:
