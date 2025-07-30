@@ -23,7 +23,7 @@ Refatorar a API de gerenciamento de agentes e casos policiais para utilizar um *
 │
 ├── package.json
 ├── server.js
-├── .env (opcional para centralizar configurações)
+├── .env
 │
 ├── db/
 │ ├── migrations/
@@ -52,6 +52,14 @@ Refatorar a API de gerenciamento de agentes e casos policiais para utilizar um *
 
 ### 1. Configurar o banco de dados PostgreSQL com Docker
 - Crie um arquivo `docker-compose.yml` na raiz do projeto para subir um container do PostgreSQL com um **volume persistente**.
+
+- Utilize um arquivo .env para armazenar as seguintes credenciais e utilize-as no arquivo `docker-compose.yml`:
+
+```
+POSTGRES_USER=root
+POSTGRES_PASSWORD=root
+POSTGRES_DB=db
+```
 
 ### 2. Criar a pasta `db/`
 Dentro da pasta `db/`, você deve criar os seguintes arquivos:
