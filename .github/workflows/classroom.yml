@@ -63,7 +63,12 @@ jobs:
 
     
       - name: Check repository criteria
-        uses: webtech-network/autograder@etapa-3 # Your published action
+        uses: webtech-network/autograder@etapa-3 #Your published action
+        env:
+          POSTGRES_HOST: postgres 
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: policia_db
         with:
           autograder_bot_token: ${{ steps.generate_app_token.outputs.token }} # Pass the App token here!
           redis_name: ${{ secrets.REDIS_NAME }}
