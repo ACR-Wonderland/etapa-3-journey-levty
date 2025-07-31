@@ -1,0 +1,23 @@
+{
+  "name": "solucao-perfeita-etapa-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "knex": "^3.1.0",
+    "pg": "^8.16.3",
+    "zod": "^4.0.5"
+  },
+  "devDependencies": {
+    "axios": "^1.10.0",
+    "nodemon": "^3.1.10"
+  }
+}
