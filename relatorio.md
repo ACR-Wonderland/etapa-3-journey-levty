@@ -1,160 +1,118 @@
 <sup>Esse é um feedback gerado por IA, ele pode conter erros.</sup>
 
-Você tem 4 créditos restantes para usar o sistema de feedback AI.
+Você tem 3 créditos restantes para usar o sistema de feedback AI.
 
 # Feedback para gnvr29:
 
 Nota final: **46.4/100**
 
-# Feedback para você, gnvr29! 🚓✨
+# Feedback para você, gnvr29! 🚀👮‍♂️
 
-Olá, meu(a) amigo(a) dev! Primeiro, quero parabenizar você pelo esforço em montar essa API para o Departamento de Polícia. Criar uma aplicação RESTful com Node.js e Express.js, organizando rotas, controladores e até tentando implementar filtros e validações, não é tarefa fácil! 🎉 Você já tem uma boa base, e é ótimo ver que seu código está estruturado em módulos, com controllers e rotas bem separados. Isso mostra que você está no caminho certo para construir APIs escaláveis e limpas.
-
----
-
-## O que você mandou muito bem! 👏
-
-- **Organização das rotas e controllers:** Você dividiu bem os arquivos, usando `express.Router()` para as rotas e delegando a lógica para os controllers. Isso é excelente para manter o código modular e limpo!
-
-- **Tratamento de erros e status codes:** Você está usando status HTTP corretos para várias situações (como 404 para não encontrado, 400 para payload inválido, 201 para criação). Isso é fundamental para uma API RESTful de qualidade.
-
-- **Validação de campos:** A ideia de ter um `Validator` que recebe os campos esperados e valida o corpo da requisição é muito boa! Isso ajuda a garantir a integridade dos dados.
-
-- **Verificação da existência do agente ao criar um caso:** Ótimo ter essa checagem para evitar casos atribuídos a agentes inexistentes.
-
-- **Implementação parcial dos métodos HTTP:** Você implementou GET, POST, PUT, PATCH e DELETE para `/agentes` e `/casos`, o que é o básico esperado.
-
-- **Bônus reconhecido:** Mesmo que os testes bônus não tenham passado, você mostrou intenção de implementar filtros e buscas mais complexas, como indicado nos comentários das rotas (`// GET /casos/:id/agente`, `//GET /casos/search?q=furto`). Isso é um sinal muito positivo de que você está pensando além do básico.
+Olá! Antes de tudo, parabéns pelo esforço e por já ter avançado bastante na construção dessa API para o Departamento de Polícia! 🎉 Você estruturou seu projeto com rotas, controllers e já está usando classes para validação e repositórios, o que mostra que está no caminho certo para organizar um código escalável e fácil de manter. Isso é muito importante! 👏
 
 ---
 
-## Agora, vamos juntos analisar os pontos que podem ser melhorados para destravar a sua API e fazer ela brilhar! 🔎✨
+## O que você já mandou muito bem! 🌟
+
+- Você criou os arquivos de rotas para **agentes** e **casos** e definiu os endpoints REST básicos (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`) para ambos os recursos.  
+- Implementou validações de campos nos controllers, usando a classe `Validator` para garantir que o corpo das requisições esteja correto.  
+- Fez tratamento de erros com status HTTP adequados (como 400 para payload inválido e 404 para recurso não encontrado).  
+- Seu código no controller está claro e organizado, usando async/await para lidar com operações assíncronas.  
+- Você também tentou aplicar lógica para diferenciação entre `PUT` e `PATCH` na validação, o que mostra que entende a diferença entre atualização parcial e total.  
+- Além disso, você já criou o middleware `express.json()` para tratar JSON no corpo das requisições, que é fundamental!  
+
+E mais: você já está tentando trabalhar com filtros e buscas, mesmo que ainda precise de ajustes. Isso mostra que está pensando em funcionalidades extras para a API, o que é excelente! 🎯
+
+---
+
+## Agora, vamos ao que precisa de atenção para destravar seu projeto? 🕵️‍♂️🔍
 
 ### 1. Falta dos arquivos `repositories/agentesRepository.js` e `repositories/casosRepository.js`
 
-Esse é o ponto mais crítico que encontrei no seu código. Você está usando um módulo `Repository` para abstrair o acesso aos dados, e cria instâncias dele assim:
+Este é o ponto mais crítico que encontrei no seu código. No seu projeto, os controllers dependem de uma classe `Repository` que deveria estar implementada nos arquivos dentro da pasta `repositories/`. Porém, esses arquivos **não existem** no seu repositório:
 
-```js
-const agentesRepository = new Repository("agentes");
-const casosRepository = new Repository("casos");
+```plaintext
+# ARQUIVO: repositories/agentesRepository.js
+---
+**O ARQUIVO NÃO EXISTE NO REPOSITORIO DO ALUNO!.**
+---
+
+# ARQUIVO: repositories/casosRepository.js
+---
+**O ARQUIVO NÃO EXISTE NO REPOSITORIO DO ALUNO!.**
+---
 ```
 
-Mas, ao analisar seu repositório, percebi que os arquivos `repositories/agentesRepository.js` e `repositories/casosRepository.js` **não existem**. Isso significa que o código não tem a camada fundamental que armazena e manipula os dados em memória, que é requisito obrigatório do projeto.
+Sem esses arquivos, o que acontece?
 
-Sem esses arquivos, suas funções nos controllers que chamam métodos como `create`, `read`, `update` e `remove` no `agentesRepository` e `casosRepository` não vão funcionar, porque a implementação concreta desses métodos está faltando.
+- Os métodos chamados nos controllers, como `agentesRepository.read()`, `casosRepository.create()`, `update()`, `remove()` e outros, **não têm implementação**.  
+- Isso significa que as operações básicas de CRUD não estão funcionando, pois não há manipulação dos dados em memória (arrays) que deveriam estar nesses repositórios.  
+- Por isso, vários testes e funcionalidades falham, pois o backend não consegue ler, criar, atualizar ou deletar agentes e casos.  
 
-Esse é o motivo pelo qual vários testes de criação, leitura, atualização e exclusão dos agentes e casos falharam. A causa raiz é a ausência dos arquivos do repositório que gerenciam os dados!
+**Em resumo:** A ausência dos repositórios é a causa raiz da maior parte dos problemas que você está enfrentando!  
 
 ---
 
-### Como resolver?
+### Como corrigir?
 
-Você precisa criar os arquivos `agentesRepository.js` e `casosRepository.js` dentro da pasta `repositories/`. Neles, você deve implementar a lógica para armazenar os dados em arrays e manipular esses dados com métodos como:
-
-- `create(data)` — para adicionar um novo item
-- `read(query)` ou `readAll()` — para buscar itens, com ou sem filtro
-- `update(id, data)` — para atualizar um item pelo id
-- `remove(id)` — para deletar um item pelo id
-
-Exemplo simplificado do que pode ser o começo do `agentesRepository.js`:
+Você precisa criar os arquivos `agentesRepository.js` e `casosRepository.js` dentro da pasta `repositories/` e implementar a classe `Repository` que gerencia os dados em memória usando arrays. Por exemplo:
 
 ```js
-class AgentesRepository {
-  constructor() {
-    this.agentes = [];
-    this.currentId = 1;
+// repositories/Repository.js (exemplo genérico)
+class Repository {
+  constructor(resourceName) {
+    this.resourceName = resourceName;
+    this.data = [];
+    this.nextId = 1;
   }
 
-  create(data) {
-    const newAgente = { id: this.currentId++, ...data };
-    this.agentes.push(newAgente);
-    return newAgente;
+  async create(item) {
+    item.id = this.nextId++;
+    this.data.push(item);
+    return item;
   }
 
-  read(query = {}) {
-    if (Object.keys(query).length === 0) return this.agentes;
-    return this.agentes.filter(agente => {
-      return Object.entries(query).every(([key, value]) => agente[key] == value);
+  async read(query) {
+    if (!query || Object.keys(query).length === 0) {
+      return this.data;
+    }
+    // exemplo simples de busca por id
+    if (query.id) {
+      return this.data.find(item => item.id === Number(query.id));
+    }
+    // outras buscas podem ser implementadas aqui
+    return this.data.filter(item => {
+      return Object.entries(query).every(([key, value]) => item[key] == value);
     });
   }
 
-  update(id, data) {
-    const index = this.agentes.findIndex(agente => agente.id == id);
+  async update(id, newData) {
+    const index = this.data.findIndex(item => item.id === Number(id));
     if (index === -1) return null;
-    this.agentes[index] = { ...this.agentes[index], ...data };
-    return this.agentes[index];
+    this.data[index] = { ...this.data[index], ...newData, id: Number(id) };
+    return this.data[index];
   }
 
-  remove(id) {
-    const index = this.agentes.findIndex(agente => agente.id == id);
+  async remove(id) {
+    const index = this.data.findIndex(item => item.id === Number(id));
     if (index === -1) return false;
-    this.agentes.splice(index, 1);
+    this.data.splice(index, 1);
     return true;
   }
 }
 
-module.exports = AgentesRepository;
+module.exports = Repository;
 ```
 
-Você pode criar uma classe semelhante para `casosRepository.js`.
+Você pode criar um arquivo `repositories/Repository.js` com essa classe genérica e depois criar arquivos específicos `agentesRepository.js` e `casosRepository.js` que importam e instanciam essa classe para cada recurso. Isso vai garantir que seus controllers tenham uma base para operar os dados.
 
 ---
 
-### 2. Uso do `Repository` genérico no controller
+### 2. Organização da Estrutura de Diretórios
 
-No seu controller, você faz:
+Percebi que você tem as pastas `routes/` e `controllers/` corretamente, mas está faltando a pasta `repositories/` com os arquivos essenciais. Além disso, não encontrei o arquivo `project_structure.txt` que poderia ajudar a visualizar a organização esperada.
 
-```js
-const Repository = require("../repositories/Repository")
-const agentesRepository = new Repository("agentes");
-const casosRepository = new Repository("casos");
-```
-
-Mas não encontrei esse arquivo `repositories/Repository.js` no seu projeto. Isso sugere que você talvez tenha tentado criar um repositório genérico, mas não finalizou ou esqueceu de enviar.
-
-Se a ideia é usar repositórios separados para agentes e casos, o ideal é importar as classes específicas que você vai criar, por exemplo:
-
-```js
-const AgentesRepository = require("../repositories/agentesRepository");
-const CasosRepository = require("../repositories/casosRepository");
-
-const agentesRepository = new AgentesRepository();
-const casosRepository = new CasosRepository();
-```
-
-Essa abordagem deixa o código mais claro e facilita o gerenciamento de dados específicos para cada recurso.
-
----
-
-### 3. Métodos de filtragem e busca nos controllers de casos
-
-No seu controller de casos, você tem:
-
-```js
-getCasos: async(req, res) => {
-  const query = req.query;
-  
-  if (Object.keys(query).length > 0) {
-    const filtered = casosRepository.filterByQuery(query);
-    return res.json(filtered);
-  }
-  
-  const all = await casosRepository.readAll();
-  return res.json(all);
-},
-```
-
-Porém, como o arquivo `casosRepository.js` não existe, o método `filterByQuery` também não está implementado. Isso causa falha nos filtros e buscas que você tentou implementar.
-
-Além disso, o método `readAll` também precisa estar implementado no repositório.
-
----
-
-### 4. Organização da estrutura de pastas
-
-Sua estrutura está boa, com `routes/`, `controllers/` e `utils/`, mas está faltando a pasta `repositories/` com os arquivos essenciais para o funcionamento da API.
-
-A estrutura esperada é:
+Para seu projeto ficar alinhado com o esperado, a estrutura deve ser assim:
 
 ```
 📦 SEU-REPOSITÓRIO
@@ -172,8 +130,8 @@ A estrutura esperada é:
 │   └── casosController.js
 │
 ├── repositories/
-│   ├── agentesRepository.js   <-- Faltando!
-│   └── casosRepository.js    <-- Faltando!
+│   ├── agentesRepository.js
+│   └── casosRepository.js
 │
 ├── docs/
 │   └── swagger.js (opcional)
@@ -182,76 +140,94 @@ A estrutura esperada é:
     └── errorHandler.js
 ```
 
-Sem essa organização completa, a API não consegue funcionar corretamente.
+Manter essa organização vai facilitar a manutenção e entendimento do seu código, além de ser um requisito do desafio.  
+
+Se quiser entender melhor sobre essa arquitetura MVC aplicada ao Node.js, recomendo este vídeo que explica muito bem:  
+👉 https://youtu.be/bGN_xNc4A1k?si=Nj38J_8RpgsdQ-QH
 
 ---
 
-### 5. Pequenas sugestões para melhorar seu código
+### 3. Implementação dos Métodos de Filtro e Busca (Bônus)
 
-- No controller de agentes, no método `getAgenteById` você faz:
+Você tentou implementar filtros e buscas na rota `/casos` e também criar endpoints para buscar casos de um agente, mas notei que:
+
+- No controller `casosController.js`, você chama métodos como `casosRepository.filterByQuery(query)` e `casosRepository.readAll()`, mas esses métodos não existem (ou não estão implementados no repositório, que por sua vez nem existe).  
+- No controller `agentesController.js`, você tem o método `getCasosFromAgente` que usa `casosRepository.readCasoFromAgente(id)`, mas esse método também não está implementado.  
+- Isso faz com que as funcionalidades de filtro e busca não funcionem, causando falha nos testes bônus.
+
+Para resolver isso, você deve implementar esses métodos no seu repositório, por exemplo:
 
 ```js
-const agente = await agentesRepository.read({id: id})
+// Dentro da classe Repository
+filterByQuery(query) {
+  return this.data.filter(item => {
+    return Object.entries(query).every(([key, value]) => {
+      return item[key] && item[key].toString().toLowerCase().includes(value.toString().toLowerCase());
+    });
+  });
+}
 
-if (agente) {
-  return res.json(agente)
-} else {
-  res.status(404)
-  return res.json({message: "Agente não encontrado"})
+readAll() {
+  return this.data;
+}
+
+readCasoFromAgente(agenteId) {
+  return this.data.filter(caso => caso.agente_id === Number(agenteId));
 }
 ```
 
-Dependendo da implementação do `read`, pode ser que ele retorne um array. Se for o caso, talvez precise acessar o primeiro elemento, por exemplo:
+Assim, você terá a base para implementar filtros e buscas simples e complexas.
+
+---
+
+### 4. Pequenos detalhes que podem ajudar a melhorar
+
+- No seu `server.js`, você fez o correto ao usar `express.json()`, mas seria legal garantir que as rotas estejam prefixadas, por exemplo:
 
 ```js
-const agentes = await agentesRepository.read({id: id});
-const agente = agentes[0];
+app.use("/agentes", agentesRouter);
+app.use("/casos", casosRouter);
 ```
 
-Assim evita retornar um array quando o esperado é um objeto único.
+Assim, você evita ter que repetir `/agentes` e `/casos` nas rotas internas. Mas isso é mais um detalhe de organização.
 
-- Na criação e atualização, sempre valide se o objeto retornado é válido antes de enviar a resposta.
-
----
-
-## Recursos para você avançar 🚀
-
-- Para entender melhor como organizar rotas e controllers no Express.js, recomendo fortemente este vídeo:  
-  https://expressjs.com/pt-br/guide/routing.html
-
-- Para aprender a estruturar seu projeto com arquitetura MVC (Model-View-Controller) e separar responsabilidades, veja:  
-  https://youtu.be/bGN_xNc4A1k?si=Nj38J_8RpgsdQ-QH
-
-- Para implementar repositórios que manipulam dados em memória usando arrays e métodos JavaScript, este vídeo é uma mão na roda:  
-  https://youtu.be/glSgUKA5LjE?si=t9G2NsC8InYAU9cI
-
-- Para entender melhor o protocolo HTTP, códigos de status e como usá-los no Express.js:  
-  https://youtu.be/RSZHvQomeKE
-
-- Para validar dados e tratar erros de forma eficaz, recomendo este tutorial:  
-  https://youtu.be/yNDCRAz7CM8?si=Lh5u3j27j_a4w3A_
+- Também, lembre-se de sempre retornar o status code correto antes de enviar a resposta, como você já está fazendo, isso é ótimo!
 
 ---
 
-## Resumo rápido dos principais pontos para focar:
+## Recursos para você se aprofundar e corrigir os pontos acima 📚
 
-- 📂 **Crie os arquivos `agentesRepository.js` e `casosRepository.js` na pasta `repositories/`.** Eles são essenciais para armazenar e manipular os dados em memória.
+- Para entender como montar uma API REST com Express e organizar o projeto:  
+  https://youtu.be/RSZHvQomeKE  
+  https://expressjs.com/pt-br/guide/routing.html  
 
-- 🏗️ **Implemente os métodos básicos de CRUD nesses repositórios:** `create()`, `read()`, `update()`, `remove()` e métodos auxiliares para filtros.
+- Para entender arquitetura MVC e organização de projetos Node.js:  
+  https://youtu.be/bGN_xNc4A1k?si=Nj38J_8RpgsdQ-QH  
 
-- 🔄 **Ajuste a importação dos repositórios nos controllers para usar as classes específicas, não um repositório genérico não implementado.**
+- Para aprender a manipular arrays em JavaScript, essencial para repositórios em memória:  
+  https://youtu.be/glSgUKA5LjE?si=t9G2NsC8InYAU9cI  
 
-- 🔍 **Implemente corretamente a filtragem e busca nos repositórios para que as funções de filtro no controller funcionem.**
-
-- 🗂️ **Mantenha a estrutura de pastas conforme o padrão esperado para facilitar manutenção e escalabilidade.**
+- Para entender melhor validação e tratamento de erros na API:  
+  https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/400  
+  https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/404  
 
 ---
 
-Você está no caminho certo, e com esses ajustes vai conseguir fazer sua API funcionar 100%! 🚀 Não desanime com os obstáculos — eles são parte do aprendizado e vão te deixar mais forte como desenvolvedor(a). Continue praticando, organizando o código e explorando os conceitos de arquitetura e manipulação de dados. Estou aqui torcendo por você! 🎯💪
+## Resumo rápido para focar:
 
-Se precisar, volte a me chamar que a gente resolve juntos! 😉
+- **Crie a pasta `repositories/` e implemente os arquivos `agentesRepository.js` e `casosRepository.js`** com uma classe que manipule os dados em memória (arrays).  
+- **Implemente os métodos necessários para CRUD e filtros** dentro desses repositórios para que seus controllers possam funcionar corretamente.  
+- **Mantenha a estrutura de diretórios conforme o padrão esperado**, isso ajuda na organização e é obrigatório.  
+- **Implemente filtros e buscas no repositório para destravar os bônus.**  
+- Continue usando validação e tratamento de erros como já está fazendo, isso está muito bom!  
 
-Até a próxima, futuro(a) mestre da API REST! 👮‍♂️👩‍💻✨
+---
+
+Você está no caminho certo! 🚀 Com esses ajustes fundamentais, sua API vai funcionar como esperado e você vai conseguir avançar muito mais rápido. Continue firme, aprender a estruturar bem o backend é uma habilidade valiosa e você está construindo uma base sólida para o seu futuro como desenvolvedor! 💪
+
+Se precisar, volte aos recursos indicados para reforçar os conceitos e me chame para mais dicas! Estou aqui para ajudar! 😉
+
+Abraços e sucesso! 👮‍♀️✨
 
 > Caso queira tirar uma dúvida específica, entre em contato com o Chapter no nosso [discord](https://discord.gg/DryuHVnz).
 
