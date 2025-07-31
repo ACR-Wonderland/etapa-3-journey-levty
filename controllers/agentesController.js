@@ -3,26 +3,21 @@ const Validator = require("../utils/errorHandler")
 const fields = ["nome", "dataDeIncorporacao", "cargo"]
 
 const validator = new Validator(fields)
-const repository = new Repository("agentes")
+const agentesRepository = new Repository("agentes");
+const casosRepository = new Repository("casos");
 module.exports = {
 
     //GET /agentes
     getAgentes: async (req, res) => {
         const query = req.query;
-      
-        // if (Object.keys(query).length > 0) {
-        //   const filtered = repository.filterByQuery(query);
-        //   return res.json(filtered);
-        // }
-      
-        const all = await repository.read(query);
+        const all = await agentesRepository.read(query);
         return res.json(all);
       },
     //GET /agentes/:id
     getAgenteById: async(req, res) => {
         
         const {id} = req.params
-        const agente = await repository.read({id: id})
+        const agente = await agentesRepository.read({id: id})
 
         if (agente) {
           return res.json(agente)
@@ -32,6 +27,23 @@ module.exports = {
             return res.json({message: "Agente não encontrado"})
         }
     },
+
+
+    //GET /agentes/:id/casos
+    getCasosFromAgente: async (req,res) => {
+        const { id } = req.params;
+    
+        const casos = await casosRepository.readCasoFromAgente(id)
+    
+        if (!casos.length) {
+            return res.status(404).json({ message: "Nenhum caso encontrado para este agente" });
+        }
+    
+        return res.json(casos);
+        
+    },
+
+    
     //POST /agentes
     create: async(req, res) => {
          const body = req.body
@@ -42,7 +54,7 @@ module.exports = {
             return res.json({message: validator.errorMessage})
 
          }
-         const newAgente = await repository.create(body)
+         const newAgente = await agentesRepository.create(body)
          res.status(201)
          return res.json(newAgente)
     },
@@ -68,7 +80,7 @@ module.exports = {
 
         }
             
-        const updatedAgente = await repository.update(id, body)
+        const updatedAgente = await agentesRepository.update(id, body)
         if(!updatedAgente ) {
             res.status(404)
             return res.json({message: "Agente não encontrado"})
@@ -83,7 +95,7 @@ module.exports = {
     deleteById: async (req, res) => {
         const { id } = req.params;
 
-        const wasRemoved = await repository.remove(id)
+        const wasRemoved = await agentesRepository.remove(id)
 
         if (wasRemoved) {
         

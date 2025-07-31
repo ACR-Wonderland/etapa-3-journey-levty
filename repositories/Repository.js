@@ -35,6 +35,21 @@ class Repository {
     }
   }
 
+  async readCasoFromAgente(id) {
+    
+    return db(this.table)
+    .join("agentes", "casos.agente_id", "agentes.id")
+    .select(
+        "casos.id as caso_id",
+        "casos.titulo",
+        "casos.descricao",
+        "casos.status",
+        "agentes.nome as agente_nome",
+        "agentes.cargo"
+    )
+    .where("agentes.id", id);
+  }
+
   async update(id, fieldsToUpdate) {
     try {
       const updated = await db(this.table)
