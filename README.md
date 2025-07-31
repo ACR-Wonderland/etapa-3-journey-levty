@@ -167,7 +167,7 @@ npx knex seed:run
 Crie esse arquivo e adicione instruções claras para:
 - Subir o banco com Docker
 - Executar migrations
-- Rodar seeds
+- Rodar seeds.
 
 
 ---
