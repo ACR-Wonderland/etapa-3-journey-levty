@@ -62,11 +62,12 @@ POSTGRES_DB=policia_db
 ```
 **OBSERVAÇÃO: o uso de valores diferentes resultará em falhas nos testes**
 
-- Crie um arquivo `docker-compose.yml` na raiz do projeto para subir um container do PostgreSQL com um **volume persistente**, utilizando as váriaveis de ambiente para inserir dados sensíveis.
+- Crie um arquivo `docker-compose.yml` na raiz do projeto para subir um container do PostgreSQL com um **volume persistente**, utilizando as váriaveis de ambiente para inserir dados sensíveis. Tenha certeza de seu container está rodando quando for desenvolver sua aplicação
   
 ### 2. Instalar o knex e criar o arquivo **`knexfile.js`**
-- Primeiro instale o knex localmente com `npm install knex --save`, depois globalmente com `npm install knex -g` (Precisamos da instalação global para rodarmos comandos do knex)
-- Agora, na **raiz do projeto**, devemos criar o knexfile.js com o comando `knex init`. Ele cria um arquivo de configurações de conexão com o PostgreSQL para diversos ambientes, edite esse arquivo para deixá-lo assim:
+- Primeiro instale o knex localmente com `npm install knex pg`
+- Rode `npm install dotenv` para utilizarmos variáveis do arquivo .env
+- Agora, na **raiz do projeto**, devemos criar o knexfile.js com o comando `npx knex init`. Ele cria um arquivo de configurações de conexão com o PostgreSQL para diversos ambientes. Criaremos uma configuração de desenvolvimento para nos conectarmos ao banco que criamos e adicionaremos caminhos para a criação de migrations e seeds, edite esse arquivo para deixá-lo assim:
 
 ```js
 // Update with your config settings.
@@ -74,6 +75,9 @@ POSTGRES_DB=policia_db
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
+
+require('dotenv').config();
+
 module.exports = {
 
   development: {
@@ -127,6 +131,10 @@ npx knex migrate:make solution_migrations.js
   - `casos`: `id`, `titulo (string)`, `descricao (string)`, `status (aberto/solucionado)`, `agente_id` com **foreign key** para `agentes.id`.
 
 **IMPORTANTE! Não utilizaremos mais o uuid, pois o PostgreSQL lida com a lógica de indexação e incrementa automaticamente. Jamais explicite o id dentro de um payload que será guardado no banco de dados, pois isso pode causar comportamento indesejado**
+- Aplique as migrations com:
+```bash
+npx knex migrate:latest
+```
 ---
 
 ### 5. Criar Seeds
@@ -138,7 +146,7 @@ npx knex seed:make {numero_gerado}_solution_migrations.js
 ```
 - Execute as seeds com:
 ```bash
-knex seed:run
+npx knex seed:run
 ```
 
 **OBSERVAÇÃO: Siga o nome do migration à risca para evitar falhas desnecessárias nos testes**
