@@ -141,7 +141,7 @@ npx knex migrate:latest
 - Crie seeds para popular as tabelas com pelo menos 2 agentes e 2 casos (Tem certeza de que o diretório que você se encontra no terminal é a raiz do projeto, do contrário você terá uma pasta `db/` duplicada):
 
 ```bash
-npx knex seed:make {numero_gerado}_solution_migrations.js
+npx knex seed:make solution_migrations.js
 
 ```
 - Execute as seeds com:
