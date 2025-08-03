@@ -26,7 +26,7 @@ module.exports = {
   ci: {
     client: 'pg',
     connection: {
-      host: 'postgres', // Using the service name as the host
+      host: 'pg-db-etapa-3', 
       port: 5432,
       user: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,

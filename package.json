@@ -5,7 +5,13 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "migrate": "knex migrate:latest",
+    "migrate-container": "knex --env ci migrate:latest",
+    "seed": "knex seed:run",
+    "seed-container": "knex --env ci seed:run",
+    "db:setup": "npm run migrate && npm run seed",
+    "db:setup:container": "npm run migrate-container && npm run seed-container"
   },
   "author": "",
   "license": "ISC",
